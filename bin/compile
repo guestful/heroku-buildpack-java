@@ -38,7 +38,7 @@ mkdir -p $CACHE_DIR
 
 # create default system.properties 
 if [ ! -f ${BUILD_DIR}/system.properties ]; then
-  echo "java.runtime.version=1.6" > ${BUILD_DIR}/system.properties
+  echo "java.runtime.version=1.8" > ${BUILD_DIR}/system.properties
 fi
 
 # install JDK 
@@ -76,7 +76,7 @@ cd $BUILD_DIR
 export MAVEN_OPTS="-Xmx1024m"
 
 # build app
-BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true clean install"
+BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -q -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true clean install"
 echo "-----> executing $BUILDCMD"
 
 $BUILDCMD 2>&1 | sed -u 's/^/       /'
