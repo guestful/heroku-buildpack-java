@@ -23,7 +23,7 @@ install_java() {
     echo " URL: ${jdkUrl}"
     curl --silent --location ${jdkUrl} --output ${jdkTarball}
 #    tar pxzf ${jdkTarball} -C "${jdkDir}"
-    tar pxzf ${jdkTarball} -C "${jdkDir}"
+    tar pxzf ${jdkTarball}
     mv jdk1.8.0_05 "${jdkDir}"
     rm ${jdkTarball}
     echo "${javaVersion}" > "${jdkDir}"/version
