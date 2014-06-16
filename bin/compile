@@ -72,6 +72,7 @@ export MAVEN_OPTS="-Xmx1024m"
 BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -q -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true clean install"
 echo "-----> executing $BUILDCMD"
 
+java -version
 $BUILDCMD 2>&1 | sed -u 's/^/       /'
 
 if [ "${PIPESTATUS[*]}" != "0 0" ]; then
