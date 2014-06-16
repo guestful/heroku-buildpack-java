@@ -17,6 +17,7 @@ install_java() {
   jdkDir="${baseDir}"/.jdk
   jdkTarball="${jdkDir}"/jdk.tar.gz
   javaExe="${jdkDir}/$(_get_relative_jdk_bin)"/java
+  rm -f -r "${jdkDir}"
 #  mkdir -p "${jdkDir}"
   if [ ! -f "${jdkTarball}" ] && [ ! -f "${javaExe}" ] || is_java_version_change "${jdkDir}" "${javaVersion}"; then 
     jdkUrl=$(_get_jdk_download_url "${javaVersion}")
