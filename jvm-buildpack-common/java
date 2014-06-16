@@ -17,13 +17,14 @@ install_java() {
   jdkDir="${baseDir}"/.jdk
   jdkTarball="${jdkDir}"/jdk.tar.gz
   javaExe="${jdkDir}/$(_get_relative_jdk_bin)"/java
-  mkdir -p "${jdkDir}"
+#  mkdir -p "${jdkDir}"
   if [ ! -f "${jdkTarball}" ] && [ ! -f "${javaExe}" ] || is_java_version_change "${jdkDir}" "${javaVersion}"; then 
     jdkUrl=$(_get_jdk_download_url "${javaVersion}")
-    echo "JDK URL: ${jdkUrl}"
+    echo " URL: ${jdkUrl}"
     curl --silent --location ${jdkUrl} --output ${jdkTarball}
+#    tar pxzf ${jdkTarball} -C "${jdkDir}"
     tar pxzf ${jdkTarball} -C "${jdkDir}"
-    mv "${jdkDir}/jdk1.8.0_05/*" "${jdkDir}"
+    mv jdk1.8.0_05 "${jdkDir}"
     rm ${jdkTarball}
     echo "${javaVersion}" > "${jdkDir}"/version
     if [ ! -f "${javaExe}" ]; then
