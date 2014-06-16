@@ -22,10 +22,9 @@ install_java() {
     jdkUrl=$(_get_jdk_download_url "${javaVersion}")
     echo " URL: ${jdkUrl}"
     curl --silent --location ${jdkUrl} --output ${jdkTarball}
-#    tar pxzf ${jdkTarball} -C "${jdkDir}"
-    tar pxzf ${jdkTarball}
-    mv jdk1.8.0_05 "${jdkDir}"
+    tar pxzf ${jdkTarball} -C "${baseDir}"
     rm ${jdkTarball}
+    mv "${baseDir}/jdk1.8.0_05" "${jdkDir}"
     echo "${javaVersion}" > "${jdkDir}"/version
     if [ ! -f "${javaExe}" ]; then
       echo "Unable to retrieve the JDK."
