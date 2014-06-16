@@ -4,7 +4,7 @@ LATEST_JDK_VERSION="1.7"
 DEFAULT_JDK_VERSION="1.6"
 
 # JDK_URL_1_8="http://heroku-jdk.s3.amazonaws.com/openjdk1.8.0_b107.tar.gz"
-JDK_URL_1_8="http://s3.amazonaws.com/guestful-support/jdk-8u5-linux-x64.tar.gz"
+JDK_URL_1_8="http://s3.amazonaws.com/guestful-support/jdk1.8.0_05.tar.gz"
 JDK_URL_1_7="http://heroku-jdk.s3.amazonaws.com/openjdk1.7.0_45.tar.gz"
 JDK_URL_1_6="http://heroku-jdk.s3.amazonaws.com/openjdk1.6.0_27.tar.gz"
 JDK_URL_1_6_DARWIN="http://heroku-jvm-langpack-java.s3.amazonaws.com/openjdk6-u33-heroku-temaki-darwin.tar.gz"
@@ -22,11 +22,8 @@ install_java() {
     jdkUrl=$(_get_jdk_download_url "${javaVersion}")
     curl --silent --location ${jdkUrl} --output ${jdkTarball}
     tar pxzf ${jdkTarball} -C "${jdkDir}"
-    echo `ls`
-    echo `ls "${jdkDir}"`
-    echo "${javaVersion}" > "${jdkDir}"/version
     rm ${jdkTarball}
-    mv "${jdkDir}/jdk1.8.0_05/*" "${jdkDir}/"
+    echo "${javaVersion}" > "${jdkDir}"/version
     if [ ! -f "${javaExe}" ]; then
       echo "Unable to retrieve the JDK."
       return 1
