@@ -23,13 +23,13 @@ source <(curl -s https://raw.githubusercontent.com/guestful/heroku-buildpack-jav
 
 export_env_dir $ENV_DIR
 
-KEEP_M2_CACHE="true"
+KEEP_M2_CACHE="false"
 
-if [ ! -d $CACHE_DIR ]; then
-  KEEP_M2_CACHE="false"
-elif [ -f $CACHE_DIR/removeM2Cache ]; then
-  KEEP_M2_CACHE="false"
-fi
+# if [ ! -d $CACHE_DIR ]; then
+#   KEEP_M2_CACHE="false"
+# elif [ -f $CACHE_DIR/removeM2Cache ]; then
+#   KEEP_M2_CACHE="false"
+# fi
 
 if [ "true" == $KEEP_M2_CACHE ]; then
   logger -p user.notice -t "slugc[$$]" "language_pack_java retain_m2_repo"
@@ -50,48 +50,48 @@ install_java ${BUILD_DIR} ${javaVersion}
 jdk_overlay ${BUILD_DIR}
 echo " done"
 
+java -version
+
 # change to cache dir to install maven
-cd $CACHE_DIR
+# cd $CACHE_DIR
 
 # install maven with base repository
-MAVEN_URL="http://heroku-jvm-langpack-java.s3.amazonaws.com/maven.central.tar.gz"
-
-if [ ! -d .maven ]; then
-  echo -n "-----> Installing Maven 3.0.3..."
-  curl --silent --max-time 60 --location $MAVEN_URL | tar xz
-  chmod +x .maven/bin/mvn
-  echo " done"
-fi
+# MAVEN_URL="http://heroku-jvm-langpack-java.s3.amazonaws.com/maven.central.tar.gz"
+#
+# if [ ! -d .maven ]; then
+#   echo -n "-----> Installing Maven 3.0.3..."
+#   curl --silent --max-time 60 --location $MAVEN_URL | tar xz
+#   chmod +x .maven/bin/mvn
+#   echo " done"
+# fi
 
 # change to build dir to run maven
 cd $BUILD_DIR
 
-export MAVEN_OPTS="-Xmx1024m"
-
-java -version
+# export MAVEN_OPTS="-Xmx1024m"
 
 # build app
-BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -q -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true -T2C clean install"
-echo "-----> executing $BUILDCMD"
+# BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -q -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true -T2C clean install"
+# echo "-----> executing $BUILDCMD"
 
-$BUILDCMD 2>&1 | sed -u 's/^/       /'
+# $BUILDCMD 2>&1 | sed -u 's/^/       /'
 
-if [ "${PIPESTATUS[*]}" != "0 0" ]; then
-  echo " !     Failed to build app with Maven"
-  exit 1
-fi
+# if [ "${PIPESTATUS[*]}" != "0 0" ]; then
+#   echo " !     Failed to build app with Maven"
+#   exit 1
+# fi
 
-# finalize cache
+finalize cache
 if [ "false" == $KEEP_M2_CACHE ]; then
   touch $CACHE_DIR/removeM2Cache
 fi
 
-#copy .m2 and .maven if needed
-if [ "true" == $KEEP_M2_CACHE ]; then
-  for DIR in ".m2" ".maven" ; do
-    cp -r $CACHE_DIR/$DIR $DIR
-  done
-fi
+# #copy .m2 and .maven if needed
+# if [ "true" == $KEEP_M2_CACHE ]; then
+#   for DIR in ".m2" ".maven" ; do
+#     cp -r $CACHE_DIR/$DIR $DIR
+#   done
+# fi
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/java.sh"
 mkdir -p $(dirname $PROFILE_PATH)
