@@ -73,7 +73,6 @@ cd $BUILD_DIR
 # build app
 # BUILDCMD="$CACHE_DIR/.maven/bin/mvn -B -q -Duser.home=$BUILD_DIR -Dmaven.repo.local=$CACHE_DIR/.m2/repository -s $CACHE_DIR/.m2/settings.xml -DskipTests=true -T2C clean install"
 # echo "-----> executing $BUILDCMD"
-
 # $BUILDCMD 2>&1 | sed -u 's/^/       /'
 
 # if [ "${PIPESTATUS[*]}" != "0 0" ]; then
@@ -81,7 +80,7 @@ cd $BUILD_DIR
 #   exit 1
 # fi
 
-finalize cache
+# finalize cache
 if [ "false" == $KEEP_M2_CACHE ]; then
   touch $CACHE_DIR/removeM2Cache
 fi
